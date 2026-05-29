@@ -1,16 +1,21 @@
-# 忽略所有子项目下的 PlatformIO 编译产物
+# --- Build Artifacts ---
 **/.pio/
 **/.pioenvs/
 **/.piolibdeps/
-
-# 忽略所有子项目下的编译固件
+**/build/
 **/*.elf
 **/*.bin
-**/*.hex
 **/*.map
+**/*.hex
 
-# 忽略全局的 IDE 和系统缓存
+# --- IDE & System ---
 .vscode/
 .cursor/
-*.code-workspace
 .DS_Store
+Thumbs.db
+*.code-workspace
+
+# --- Project Specific ---
+**/sdkconfig
+**/sdkconfig.old
+node_modules/
