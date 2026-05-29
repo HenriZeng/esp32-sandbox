@@ -1,53 +1,37 @@
-# 05_cloud_hub | WAN MQTT Smart Control Hub
+# 05_cloud_hub
 
-This project implements a 4-channel relay controller communicating over the **Wide Area Network (WAN)** using the **MQTT protocol**. The ESP32 acts as an MQTT client, connecting to a local Wi-Fi network and subscribing to a cloud-based MQTT broker. This enables users to securely achieve real-time, low-latency (millisecond-level) remote control over physical hardware from anywhere in the world using cellular networks.
+## Overview
+This project is an ESP32-based 4-channel relay controller for remote switching over MQTT. It is intended for WAN control of simple industrial or lab loads through a broker reachable from a mobile client or other MQTT endpoint.
 
----
+## Hardware Configuration & Pinout
 
-## 🛠️ Hardware & Cloud Specifications
-* **MCU**: ESP32 Dev Module
-* **Peripherals**: 4-Channel Relay Module (Mapped to GPIOs: `2`, `4`, `16`, `17`)
-* **Hardware Trigger Mode**: Physical jumper caps locked to **HIGH (High-Level Trigger)** for optimal 3.3V-5V logic compatibility.
-* **MQTT Broker**: `broker.emqx.io` (Public sandbox broker, Port: `1883`)
+| ESP32 GPIO | Peripheral Pin | Function |
+| --- | --- | --- |
+| GPIO 2  | IN1 | Relay channel 0 |
+| GPIO 4  | IN2 | Relay channel 1 |
+| GPIO 16 | IN3 | Relay channel 2 |
+| GPIO 17 | IN4 | Relay channel 3 |
+| 3.3V / 5V | VCC | Relay module supply, per module rating |
+| GND | GND | Common ground |
 
----
+Relay outputs are configured for HIGH-level trigger mode. The broker uses `broker.emqx.io:1883`.
 
-## 📱 Mobile Client (IoT OnOff) Deployment Guide
+## Firmware Architecture & Dependencies
+The firmware uses the Arduino framework on PlatformIO and `PubSubClient` (`knolleary/PubSubClient @ ^2.8`) for MQTT transport. Relay control is handled with fixed GPIO mapping, and the main loop stays non-blocking so `client.loop()` runs continuously for MQTT keepalive and inbound message handling.
 
-To configure your mobile device for cross-network remote control, download the **IoT OnOff** app and follow these deployment steps:
+## Deployment Guide
+Build and flash with PlatformIO CLI:
 
-### 1. Create a New Panel
-* Launch the app, tap **Add a Panel**.
-* Name the panel `Henri Smart Hub` and save it to enter the dashboard.
+```bash
+cd 05_cloud_hub
+pio run
+pio run --target upload
+pio device monitor
+```
 
-### 2. Configure MQTT Connection Settings
-Tap the settings/plug icon in the top right corner of your panel and fill in the following parameters to authenticate with the cloud broker:
+Update `platformio.ini` and `src/main.cpp` with your Wi-Fi and broker settings before flashing.
 
-| Parameter | Configuration Value |
-| :--- | :--- |
-| **Protocol** | `MQTT` |
-| **Host** | `broker.emqx.io` |
-| **Port** | `1883` |
-| **Client ID** | `Phone-Henri` (or any unique identifier) |
-| **Username** | *Leave Blank* |
-| **Password** | *Leave Blank* |
-
-> 💡 **Upon successful authentication, the connection indicator status will turn green or display "Connected".**
-
-### 3. Add Control Widgets
-Tap **Add Widget** in the blank dashboard space and select the **Switch** component. Configure the 4-channel control matrix exactly as follows:
-
-| Device Name | GPIO Pin | Publish Topic | Payload On | Payload Off |
-| :--- | :---: | :--- | :---: | :---: |
-| **Light 1** | 2 | `henri/hub/control` | `0:ON` | `0:OFF` |
-| **Fan 2** | 4 | `henri/hub/control` | `1:ON` | `1:OFF` |
-| **Device 3**| 16 | `henri/hub/control` | `2:ON` | `2:OFF` |
-| **Device 4**| 17 | `henri/hub/control` | `3:ON` | `3:OFF` |
-
----
-
-## 📡 Bidirectional Status Feedback (Optional Feature)
-The firmware supports active state reporting. To implement telemetry confirmation on your mobile client, subscribe to the telemetry topic:
-* **Telemetry Subscription Topic**: `henri/hub/status`
-* **LWT / Online Message**: The ESP32 publishes `Henri Hub Online!` immediately upon establishing a cloud handshake.
-* **Command Acknowledgement**: Upon execution of a toggle payload, the hardware returns an execution log (e.g., `Channel 0 is ON`).
+## Engineering Notes & Edge Cases
+- WiFi/MQTT jitter: The control path avoids long blocking delays in `loop()`. This keeps `client.loop()` serviced often enough to maintain the MQTT heartbeat and avoid broker disconnects during normal network jitter.
+- Network port ingress: Public and remote access depends on the path to port `1883`. In restricted environments, corporate or campus Wi-Fi may block the broker connection; switching to a 2.4 GHz cellular hotspot can bypass that ingress filter.
+- Payload constraints vs formats: The control topic uses short primitive commands such as `0:ON` and `0:OFF`. The status topic publishes plain strings instead of JSON to keep heap use low and satisfy simple client-side graphing or automation tools that expect a raw value.
