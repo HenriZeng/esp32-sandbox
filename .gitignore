@@ -1,0 +1,22 @@
+# --- ESP-IDF / PlatformIO 编译产物 ---
+build/
+.pio/
+.elf
+.bin
+*.map
+
+# --- 库文件与依赖 ---
+components/*/managed_components/
+managed_components/
+dependencies.lock
+
+# --- 环境变量与私密信息 (防止泄露你的 Wi-Fi 密码等) ---
+sdkconfig
+sdkconfig.old
+*.pem
+*.key
+
+# --- 操作系统与 IDE ---
+.DS_Store
+.vscode/
+.cursor/
