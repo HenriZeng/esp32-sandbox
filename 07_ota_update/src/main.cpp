@@ -11,7 +11,7 @@
  #include <Update.h>
  
  // Firmware version tracking for deployment validation
- const char* CURRENT_VERSION = "4.0.0";
+ const char* CURRENT_VERSION = "5.0.0";
  
  // Hardware Pin Configuration: Reuse on-board LED for status and business logic
  const int STATUS_LED = 2;
@@ -30,7 +30,7 @@
  
  // Timing variables for non-blocking business loop execution
  unsigned long lastBlinkTime = 0;   
- const long blinkInterval = 500;   // Toggle LED interval in milliseconds
+ const long blinkInterval = 5000;   // Toggle LED interval in milliseconds
  bool isUpdating = false;           // Semaphore flag to lock GPIO access during flash write
  
  // 2. Wi-Fi Station Initialization
