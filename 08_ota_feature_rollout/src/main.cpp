@@ -22,13 +22,13 @@ const int BOOT_BUTTON = 0;
 // ============================================================================
 // 🌐 NETWORK & CLOUD GATEWAY PARAMETERS
 // ============================================================================
-const char* ssid         = "CMCC-yxU3"; 
-const char* password     = "x7f5f3dc";
+const char* ssid         = "CU_9cdu"; 
+const char* password     = "wzmbm5cf";
 const char* mqtt_broker  = "broker.emqx.io";
 const int   mqtt_port    = 1883;
 const char* ota_cmd_topic = "henri/ota/cmd";
 
-const String MANUAL_OTA_URL = "http://192.168.1.20:8080/firmware.bin?v=button_click";
+const String MANUAL_OTA_URL = "http://192.168.1.4:8000/firmware.bin?v=button_click";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
