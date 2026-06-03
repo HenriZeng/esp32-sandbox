@@ -1,7 +1,7 @@
 # ESP32 Sandbox
 
 ## Overview
-This repository contains eight ESP32 projects for basic bring-up, wireless scanning, BLE advertising, local relay control, MQTT relay control, MQTT telemetry output, remote firmware maintenance through OTA, and a feature-rollout OTA demo. The projects are organized as small, self-contained examples for bench testing, integration validation, and field-oriented proof-of-concept work.
+This repository contains nine ESP32 projects for basic bring-up, wireless scanning, BLE advertising, local relay control, MQTT relay control, MQTT telemetry output, remote firmware maintenance through OTA, a feature-rollout OTA demo, and an advanced dual-speaker acoustic alerting and firmware rollout module. The projects are organized as small, self-contained examples for bench testing, integration validation, and field-oriented proof-of-concept work.
 
 ## Hardware Configuration & Pinout
 
