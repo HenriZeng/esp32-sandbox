@@ -1,7 +1,7 @@
 # ESP32 Sandbox
 
 ## Overview
-This repository contains ten ESP32 projects covering basic bring-up, wireless scanning, BLE advertising, local relay control, MQTT relay control, MQTT telemetry output, remote firmware maintenance through OTA, a feature-rollout OTA demo, a dual-speaker OTA and alerting module, and an autonomous edge lifecycle management agent. The projects are organized as small, self-contained examples for bench testing, integration validation, and field-oriented proof-of-concept work.
+This repository contains eleven ESP32 projects covering basic bring-up, wireless scanning, BLE advertising, local relay control, MQTT relay control, MQTT telemetry output, remote firmware maintenance through OTA, a feature-rollout OTA demo, a dual-speaker OTA and alerting module, an autonomous edge lifecycle management agent, and an industrial fail-safe relay controller. The projects are organized as small, self-contained examples for bench testing, integration validation, and field-oriented proof-of-concept work.
 
 ## Project Index
 
@@ -17,6 +17,7 @@ This repository contains ten ESP32 projects covering basic bring-up, wireless sc
 | `08_ota_feature_rollout` | MQTT-triggered OTA rollout demo with HTTP transport and manual recovery support. |
 | `09_ota_active_buzzer_rollout` | Advanced OTA rollout module with dual-speaker alerting and separated passive/active buzzer roles. |
 | `10_edge_lifecycle_agent` | Industrial edge lifecycle agent with autonomous OTA supervision, resilient network recovery, and hardware-backed operational signaling. |
+| `11_industrial_relay_controller` | Industrial reliability relay controller with fail-safe startup sequencing, watchdog supervision, and non-blocking state management. |
 
 ## Hardware Configuration & Pinout
 
@@ -46,6 +47,10 @@ This repository contains ten ESP32 projects covering basic bring-up, wireless sc
 | 10_edge_lifecycle_agent | GPIO 2 | Status LED | Network and runtime state feedback |
 | 10_edge_lifecycle_agent | GPIO 19 | Active buzzer | Operational alerts and OTA fault signaling |
 | 10_edge_lifecycle_agent | GPIO 0 | BOOT button | Local recovery and OTA fallback trigger |
+| 11_industrial_relay_controller | GPIO 18 | IN1 | Relay channel 0 |
+| 11_industrial_relay_controller | GPIO 19 | IN2 | Relay channel 1 |
+| 11_industrial_relay_controller | GPIO 21 | IN3 | Relay channel 2 |
+| 11_industrial_relay_controller | GPIO 22 | IN4 | Relay channel 3 |
 
 Relay outputs in `04_smart_light` and `05_cloud_hub` are configured for HIGH-level trigger mode.
 
